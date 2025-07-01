@@ -7,16 +7,16 @@ import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import ItemPage from "./pages/ItemPage";
 import UserPage from "./pages/UserPage";
 
-function App() {
+function App({user}) {
   return (
     <Router>
       <Nav />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/collections" element={<CollectionsPage />} />
-        <Route path="/collection" element={<CollectionPage />} />
+        <Route path="/collection/:collectionId" element={<CollectionPage />} />
         <Route path="/item" element={<ItemPage />} />
-        <Route path="/user" element={<UserPage />} />
+        <Route path="/user/:creatorId" element={<UserPage />} />
       </Routes>
       <Footer />
     </Router>
