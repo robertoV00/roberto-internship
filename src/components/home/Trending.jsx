@@ -1,9 +1,35 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import VerifiedIcon from "../../assets/verified.png";
 import TrendingCollection from "../../assets/trending-collection.avif";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 export default function Trending() {
+
+  const [info, setInfo] = useState([])
+  const [loading, setLoading] = useState(false);
+
+  async function fetchApiData() {
+    try {
+      setLoading(true)
+      const { data } = await axios.get("https://remote-internship-api-production.up.railway.app/trendingNFTs")
+      setInfo(data);
+      
+    }
+    catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+
+  useEffect(() => {
+    console.log(info)
+    fetchApiData();
+  }, [])
+
+
   return (
     <section id="trending">
       <div className="container">
@@ -33,17 +59,17 @@ export default function Trending() {
                     key={index}
                     className="trending-collection"
                   >
-                    <div className="trending-collection__rank">1</div>
+                    <div className="trending-collection__rank">{info[index].rank}</div>
                     <div className="trending-collection__collection">
                       <figure className="trending-collection__img__wrapper">
                         <img
-                          src={TrendingCollection}
+                          src={info[index].imageLink}
                           alt=""
                           className="trending-collection__img"
                         />
                       </figure>
                       <div className="trending-collection__name">
-                        Bored Ape Yacht Club
+                        food
                       </div>
                       <img
                         src={VerifiedIcon}
@@ -52,12 +78,12 @@ export default function Trending() {
                     </div>
                     <div className="trending-collection__price">
                       <span className="trending-collection__price__span">
-                        11.55 ETH
+                        {info[index].floor} ETH
                       </span>
                     </div>
                     <div className="trending-collection__volume">
                       <span className="trending-collection__volume__span">
-                        2M ETH
+                        {info[index].totalVolume} ETH
                       </span>
                     </div>
                   </Link>
