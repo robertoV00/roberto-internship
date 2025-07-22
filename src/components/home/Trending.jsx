@@ -7,13 +7,13 @@ import axios from "axios";
 export default function Trending() {
 
   const [info, setInfo] = useState([])
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   async function fetchApiData() {
     try {
       setLoading(true)
       const { data } = await axios.get("https://remote-internship-api-production.up.railway.app/trendingNFTs")
-      setInfo(data);
+      setInfo(data.data);
       
     }
     catch (error) {
@@ -53,9 +53,9 @@ export default function Trending() {
                 <div className="trending-column__header__price">Volume</div>
               </div>
               <div className="trending-column__body">
-                {new Array(5).fill(0).map((_, index) => (
+                {loading ? "loading" : new Array(5).fill(0).map((_, index) => (
                   <Link
-                    to={"/collection"}
+                    to={`/collection${info.collectionId}`}
                     key={index}
                     className="trending-collection"
                   >
@@ -69,7 +69,7 @@ export default function Trending() {
                         />
                       </figure>
                       <div className="trending-collection__name">
-                        food
+                        {info[index].title}
                       </div>
                       <img
                         src={VerifiedIcon}
@@ -78,7 +78,7 @@ export default function Trending() {
                     </div>
                     <div className="trending-collection__price">
                       <span className="trending-collection__price__span">
-                        {info[index].floor} ETH
+                        {Number(info[index].floor).toFixed(2)} ETH
                       </span>
                     </div>
                     <div className="trending-collection__volume">
@@ -102,23 +102,23 @@ export default function Trending() {
                 <div className="trending-column__header__price">Volume</div>
               </div>
               <div className="trending-column__body">
-                {new Array(5).fill(0).map((_, index) => (
+                {loading ? "loading" : new Array(5).fill(0).map((_, index) => (
                   <Link
                     to={"/collection"}
                     key={index}
                     className="trending-collection"
                   >
-                    <div className="trending-collection__rank">1</div>
+                    <div className="trending-collection__rank">{info[index + 5].rank}</div>
                     <div className="trending-collection__collection">
                       <figure className="trending-collection__img__wrapper">
                         <img
-                          src={TrendingCollection}
+                          src={info[index + 5 ].imageLink}
                           alt=""
                           className="trending-collection__img"
                         />
                       </figure>
                       <div className="trending-collection__name">
-                        Bored Ape Yacht Club
+                        {info[index + 5].title}
                       </div>
                       <img
                         src={VerifiedIcon}
@@ -127,12 +127,12 @@ export default function Trending() {
                     </div>
                     <div className="trending-collection__price">
                       <span className="trending-collection__price__span">
-                        11.55 ETH
+                        {Number(info[index + 5].floor).toFixed(2)} ETH
                       </span>
                     </div>
                     <div className="trending-collection__volume">
                       <span className="trending-collection__volume__span">
-                        2M ETH
+                        {info[index + 5].totalVolume} ETH
                       </span>
                     </div>
                   </Link>

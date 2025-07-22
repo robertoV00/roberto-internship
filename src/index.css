@@ -27,6 +27,7 @@ html {
   padding: 0 64px;
   max-width: 2560px;
   width: 100%;
+  position: relative;
 }
 
 .green-pulse {
@@ -774,6 +775,31 @@ footer {
   COLLECTIONS PAGE
 
 */
+.arrow__swiper__left,
+.arrow__swiper__right {
+  font-size: 48px;
+  color: rgb(0, 0, 0);
+  transition: 300ms ease;
+  
+}
+
+.arrow__swiper__left:hover,
+.arrow__swiper__right:hover {
+  color: rgb(77, 228, 102);
+}
+
+.arrow__swiper__left {
+  position: relative;
+  left: -20px;
+  top: 220px;
+}
+
+.arrow__swiper__right {
+  position: absolute;
+  right: 43px;
+  top: 220px;
+}
+
 
 .collections-page__title {
   font-size: 48px;
