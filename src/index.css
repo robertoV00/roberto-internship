@@ -517,9 +517,11 @@ html {
   gap: 16px;
 }
 
-.collection-column {
+.popular__collections__column {
   width: calc((100% / 6) - 16px + (16px / 6));
 }
+
+
 
 .collection {
   width: 100%;
@@ -780,7 +782,9 @@ footer {
   font-size: 48px;
   color: rgb(0, 0, 0);
   transition: 300ms ease;
-  
+  position: relative;
+  top: 50%;
+  display: none;
 }
 
 .arrow__swiper__left:hover,
@@ -789,15 +793,15 @@ footer {
 }
 
 .arrow__swiper__left {
-  position: relative;
-  left: -20px;
-  top: 220px;
+  position: absolute;
+  left: 40px;
+  z-index: 100;
 }
 
 .arrow__swiper__right {
   position: absolute;
-  right: 43px;
-  top: 220px;
+  right: 45px;
+  z-index: 100;
 }
 
 
