@@ -38,7 +38,22 @@ export default function NewCollections() {
     fetchApiData();
   }, [])
 
-  
+  if (loading) {
+    return (
+      <header>
+        <div className="selected-collection">
+          <div className="skeleton-video skeleton" />
+          <div className="selected-collection__description">
+            <div className="skeleton-logo skeleton" />
+            <div className="skeleton-title skeleton" />
+            <div className="skeleton-author skeleton" />
+            <div className="skeleton-details skeleton" />
+            <div className="skeleton-button skeleton" />
+          </div>
+        </div>
+      </header>
+    );
+  }
   
   return (
     <section id="new-collections">
