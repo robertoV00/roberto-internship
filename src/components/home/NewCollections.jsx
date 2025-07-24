@@ -61,6 +61,7 @@ export default function NewCollections() {
             breakpoints={{
               1600: { slidesPerView: 6 },
               1200: { slidesPerView: 4 },
+              1024: { slidesPerView: 3 },
               900:  { slidesPerView: 3 },
               600:  { slidesPerView: 2 },
               0:    { slidesPerView: 1 }

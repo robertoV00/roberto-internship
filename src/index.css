@@ -797,6 +797,8 @@ footer {
 }
 
 
+
+
 .arrow__swiper__left,
 .arrow__swiper__right {
   font-size: 48px;
@@ -1654,6 +1656,7 @@ USER PAGE
 
 @media (max-width: 1200px) {
 
+
   .collection-column {
     width: 100%;
   
@@ -1675,6 +1678,11 @@ USER PAGE
 }
 
 @media (max-width: 1024px) {
+
+  /* .collection-column {
+    width: auto;
+  } */
+
   .selected-collection {
     height: calc(-24px + 50vw);
   }
@@ -1707,9 +1715,6 @@ USER PAGE
     overflow-x: auto;
   }
 
-  .collection-column {
-    width: calc((100% / 3) - 16px + (16px / 3));
-  }
 
   .collection__name {
     font-size: 14px;
@@ -1809,9 +1814,7 @@ USER PAGE
     line-height: 32px;
   }
 
-  .collection-column {
-    width: calc((100% / 2) - 16px + (16px / 2));
-  }
+  
 
   .collection__stat__data {
     font-size: 14px;
