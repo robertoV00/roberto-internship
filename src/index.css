@@ -777,6 +777,26 @@ footer {
   COLLECTIONS PAGE
 
 */
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: #ff5353;
+  background: #fff;      /* Add a background */
+  border-radius: 50%;    /* Make them circular */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  width: 60px;
+  height: 60px;
+  transition: 200ms ease;
+  --swiper-navigation-size: 32px;
+}
+
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+  color: white;
+  background: #ff5353;
+}
+
+
 .arrow__swiper__left,
 .arrow__swiper__right {
   font-size: 48px;
@@ -1607,7 +1627,6 @@ USER PAGE
   }
 
   .collection-column {
-    width: calc((100% / 5) - 16px + (16px / 5));
   }
 
   /* 
@@ -1634,8 +1653,10 @@ USER PAGE
 }
 
 @media (max-width: 1200px) {
+
   .collection-column {
-    width: calc((100% / 4) - 16px + (16px / 4));
+    width: 100%;
+  
   }
 
   .footer__top {

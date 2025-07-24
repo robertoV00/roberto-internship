@@ -58,6 +58,13 @@ export default function NewCollections() {
             spaceBetween={30}
             navigation={true}
             loop={true}
+            breakpoints={{
+              1600: { slidesPerView: 6 },
+              1200: { slidesPerView: 4 },
+              900:  { slidesPerView: 3 },
+              600:  { slidesPerView: 2 },
+              0:    { slidesPerView: 1 }
+            }}
           >
             <div className="new-collections__body">
               {loading ? "loading" : info.map((_, index) => (
