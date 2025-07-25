@@ -517,11 +517,6 @@ html {
   gap: 16px;
 }
 
-.popular__collections__column {
-  width: calc((100% / 6) - 16px + (16px / 6));
-}
-
-
 
 .collection {
   width: 100%;
@@ -1626,9 +1621,6 @@ USER PAGE
 
   .selected-collection {
     height: calc(-21.12px + 33vw);
-  }
-
-  .collection-column {
   }
 
   /* 

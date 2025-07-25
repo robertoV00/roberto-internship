@@ -67,34 +67,53 @@ export default function PopularCollections() {
           <div className="arrow__swiper__right">
             <FontAwesomeIcon icon={faCircleRight} />
           </div>
-          <div className="popular-collections__body">
-            {loading ? "loading" : new Array(6).fill(0).map((_, index) => (
-              <div className="collection-column popular__collections__column">
-                <Link to="/collection" key={index} className="collection">
-                  <img
-                    src={info[index].imageLink}
-                    alt=""
-                    className="collection__img"
-                  />
-                  <div className="collection__info">
-                    <h3 className="collection__name">{info[index].title}</h3>
-                    <div className="collection__stats">
-                      <div className="collection__stat">
-                        <span className="collection__stat__label">Floor</span>
-                        <span className="collection__stat__data">{Number(info[index].floor).toFixed(2)} ETH</span>
-                      </div>
-                      <div className="collection__stat">
-                        <span className="collection__stat__label">
-                          Total Volume
-                        </span>
-                        <span className="collection__stat__data">{info[index].totalVolume} ETH</span>
-                      </div>
-                    </div>
+          <Swiper
+                      modules={[Navigation, Scrollbar]}
+                      slidesPerView={6}
+                      slidesPerGroup={1}
+                      spaceBetween={30}
+                      navigation={true}
+                      loop={true}
+                      breakpoints={{
+                        1600: { slidesPerView: 6 },
+                        1200: { slidesPerView: 4 },
+                        1024: { slidesPerView: 3 },
+                        900:  { slidesPerView: 3 },
+                        600:  { slidesPerView: 2 },
+                        0:    { slidesPerView: 1 }
+                      }}
+          >
+            <div className="popular-collections__body">
+              {loading ? "loading" : new Array(6).fill(0).map((_, index) => (
+                <SwiperSlide key={index}>
+                  <div className="collection-column popular__collections__column">
+                      <Link to="/collection" key={index} className="collection">
+                        <img
+                          src={info[index].imageLink}
+                          alt=""
+                          className="collection__img"
+                        />
+                        <div className="collection__info">
+                          <h3 className="collection__name">{info[index].title}</h3>
+                          <div className="collection__stats">
+                            <div className="collection__stat">
+                              <span className="collection__stat__label">Floor</span>
+                              <span className="collection__stat__data">{Number(info[index].floor).toFixed(2)} ETH</span>
+                            </div>
+                            <div className="collection__stat">
+                              <span className="collection__stat__label">
+                                Total Volume
+                              </span>
+                              <span className="collection__stat__data">{info[index].totalVolume} ETH</span>
+                            </div>
+                          </div>
+                        </div>
+                      </Link>
                   </div>
-                </Link>
-              </div>
-            ))}
-          </div>
+                </SwiperSlide>
+              ))}
+            </div>
+          </Swiper>
         </div>
       </div>
     </section>
