@@ -6,6 +6,7 @@ export default function CollectionsPage() {
 
     const [info, setInfo] = useState([])
     const [loading, setLoading] = useState(true);
+    const [collectionsCount, setCollectionsCount] = useState(12);
   
     async function fetchApiData() {
       try {
@@ -48,7 +49,7 @@ export default function CollectionsPage() {
       <div className="row">
         <h1 className="collections-page__title">Collections</h1>
         <div className="collections__body">
-          {loading ? "loading" : new Array(12).fill(0).map((_, index) => (
+          {loading ? "loading" : info.slice(0, collectionsCount).map((collection, index) => (
             <div className="collection-column">
               <Link to="/collection" key={index} className="collection">
                 <img
@@ -75,7 +76,15 @@ export default function CollectionsPage() {
             </div>
           ))}
         </div>
-        <button className="collections-page__button">Load more</button>
+        {collectionsCount < info.length && (
+          <button
+          className="collections-page__button"
+          onClick={() => {
+              setCollectionsCount(prevCount => prevCount + 6);
+          }}>
+            Load more
+          </button>
+      )}
       </div>
     </div>
   );
