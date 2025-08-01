@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 export default function CollectionsPage() {
 
@@ -28,21 +30,46 @@ export default function CollectionsPage() {
     }, []);
     
     if (loading) {
-      return (
-        <header>
-          <div className="selected-collection">
-            <div className="skeleton-video skeleton" />
-            <div className="selected-collection__description">
-              <div className="skeleton-logo skeleton" />
-              <div className="skeleton-title skeleton" />
-              <div className="skeleton-author skeleton" />
-              <div className="skeleton-details skeleton" />
-              <div className="skeleton-button skeleton" />
+  return (
+    <div className="container">
+      <div className="row">
+        <h1 className="collections-page__title">Collections</h1>
+        <div className="collections__body">
+          {Array.from({ length: collectionsCount }).map((_, index) => (
+            <div className="collection-column" key={index}>
+              <div className="collection">
+                <Skeleton height={180} style={{ borderRadius: "12px 12px 0 0" }} />
+                <div className="collection__info">
+                  <h3 className="collection__name">
+                    <Skeleton width={120} height={24} />
+                  </h3>
+                  <div className="collection__stats">
+                    <div className="collection__stat">
+                      <span className="collection__stat__label">
+                        <Skeleton width={40} height={16} />
+                      </span>
+                      <span className="collection__stat__data">
+                        <Skeleton width={60} height={18} />
+                      </span>
+                    </div>
+                    <div className="collection__stat">
+                      <span className="collection__stat__label">
+                        <Skeleton width={80} height={16} />
+                      </span>
+                      <span className="collection__stat__data">
+                        <Skeleton width={60} height={18} />
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-        </header>
-      );
-    }
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
   return (
 
     <div className="container">
