@@ -10,7 +10,8 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 import 'swiper/swiper-bundle.css'
-
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 import { Navigation, Pagination, Scrollbar} from 'swiper/modules';
 
 export default function NewCollections() {
@@ -39,21 +40,48 @@ export default function NewCollections() {
   }, [])
 
   if (loading) {
-    return (
-      <header>
-        <div className="selected-collection">
-          <div className="skeleton-video skeleton" />
-          <div className="selected-collection__description">
-            <div className="skeleton-logo skeleton" />
-            <div className="skeleton-title skeleton" />
-            <div className="skeleton-author skeleton" />
-            <div className="skeleton-details skeleton" />
-            <div className="skeleton-button skeleton" />
+      return (
+        <section id="popular-collections">
+          <div className="container">
+            <div className="row">
+              <h2 className="popular-collections__title">Popular Collections</h2>
+              <div className="popular-collections__body" style={{ display: "flex", gap: "30px" }}>
+                {Array.from({ length: 6 }).map((_, index) => (
+                  <div className="collection-column popular__collections__column" key={index}>
+                    <div className="collection">
+                      <Skeleton height={180} style={{ borderRadius: "12px 12px 0 0" }} />
+                      <div className="collection__info">
+                        <h3 className="collection__name">
+                          <Skeleton width={120} height={24} />
+                        </h3>
+                        <div className="collection__stats">
+                          <div className="collection__stat">
+                            <span className="collection__stat__label">
+                              <Skeleton width={40} height={16} />
+                            </span>
+                            <span className="collection__stat__data">
+                              <Skeleton width={60} height={18} />
+                            </span>
+                          </div>
+                          <div className="collection__stat">
+                            <span className="collection__stat__label">
+                              <Skeleton width={80} height={16} />
+                            </span>
+                            <span className="collection__stat__data">
+                              <Skeleton width={60} height={18} />
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
-        </div>
-      </header>
-    );
-  }
+        </section>
+      );
+    }
   
   return (
     <section id="new-collections">
