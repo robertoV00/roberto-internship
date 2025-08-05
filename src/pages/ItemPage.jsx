@@ -5,15 +5,36 @@ import {
   faShoppingBag,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import RecommendedItems from "../components/item/RecommendedItems";
 import { faEthereum } from "@fortawesome/free-brands-svg-icons";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 export default function ItemPage() {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+    const [info, setInfo] = useState([]);
+    const { id } = useParams();
+    const [loading, setLoading] = useState(true);
+    const collection = info.find(item => String(item.id) === String(id)); //this is to find the collection by id
+  
+    // Fetch the collection by id
+    async function fetchApiData() {
+      try {
+        setLoading(true);
+        const { data } = await axios.get(`https://remote-internship-api-production.up.railway.app/collection/${id}`);
+        setInfo([data.data]);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+  
+    useEffect(() => {
+      window.scrollTo(0, 0);
+      fetchApiData();
+    }, []);
 
   return (
     <>

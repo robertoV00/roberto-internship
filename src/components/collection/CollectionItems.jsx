@@ -14,7 +14,6 @@ export default function CollectionItems() {
   const [collectionsCount, setCollectionsCount] = useState(12);
   const [sortOption, setSortOption] = useState(""); // <-- Add sort option state
 
-  // Fetch the collection by id
   async function fetchApiData() {
     try {
       setLoading(true);
@@ -35,7 +34,6 @@ export default function CollectionItems() {
   // Get the collection object
   const collection = info[0];
 
-  // Sort items based on sortOption
   let sortedItems = [...(collection?.items || [])];
   if (sortOption === "price-high") {
     sortedItems.sort((a, b) => Number(b.price) - Number(a.price));
@@ -43,7 +41,6 @@ export default function CollectionItems() {
     sortedItems.sort((a, b) => Number(a.price) - Number(b.price));
   }
 
-  // If loading or no collection, show loading state
   if (loading || !collection) {
     return (
       <section id="collection-items">
@@ -78,7 +75,6 @@ export default function CollectionItems() {
     );
   }
 
-  // Display items with "load more" functionality
   return (
     <section id="collection-items">
       <div className="row collection-items__row">
