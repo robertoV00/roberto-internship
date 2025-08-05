@@ -11,18 +11,19 @@ import { faEthereum } from "@fortawesome/free-brands-svg-icons";
 import { Link, useParams } from "react-router-dom";
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
+import axios from "axios";
 
 export default function ItemPage() {
     const [info, setInfo] = useState([]);
     const { id } = useParams();
     const [loading, setLoading] = useState(true);
-    const collection = info.find(item => String(item.id) === String(id)); //this is to find the collection by id
+    const collection = info[0]; //this is to find the collection by id
   
     // Fetch the collection by id
     async function fetchApiData() {
       try {
         setLoading(true);
-        const { data } = await axios.get(`https://remote-internship-api-production.up.railway.app/collection/${id}`);
+        const { data } = await axios.get(`https://remote-internship-api-production.up.railway.app/item/${id}`);
         setInfo([data.data]);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -35,6 +36,48 @@ export default function ItemPage() {
       window.scrollTo(0, 0);
       fetchApiData();
     }, []);
+
+
+    if (loading || !collection) {
+      return (
+        <section id="item-info">
+          <div className="container">
+            <div className="row item-page__row">
+              <div className="item-page__left">
+                <figure className="item-page__img__wrapper">
+                  <div className="item-page__img__details">
+                    <Skeleton width={32} height={32} circle />
+                    <div className="item-page__img__likes">
+                      <Skeleton width={32} height={32} circle />
+                      <Skeleton width={30} height={18} />
+                    </div>
+                  </div>
+                  <Skeleton width={400} height={400} />
+                </figure>
+              </div>
+              <div className="item-page__right">
+                <Skeleton width={120} height={24} style={{ marginBottom: 8 }} />
+                <Skeleton width={220} height={40} style={{ marginBottom: 8 }} />
+                <Skeleton width={180} height={20} style={{ marginBottom: 16 }} />
+                <div className="item-page__details">
+                  <Skeleton width={100} height={20} count={3} style={{ marginBottom: 8 }} />
+                </div>
+                <div className="item-page__sale">
+                  <div className="item-page__sale__header">
+                    <Skeleton width={160} height={20} />
+                  </div>
+                  <div className="item-page__sale__body">
+                    <Skeleton width={100} height={18} style={{ marginBottom: 8 }} />
+                    <Skeleton width={120} height={32} style={{ marginBottom: 8 }} />
+                    <Skeleton width={200} height={40} />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      );
+    }
 
   return (
     <>
@@ -53,11 +96,11 @@ export default function ItemPage() {
                       icon={faHeart}
                       className="item-page__img__icon"
                     />
-                    <span className="item-page__img__likes__text">11</span>
+                    <span className="item-page__img__likes__text">{collection.favorites}</span>
                   </div>
                 </div>
                 <img
-                  src="https://i.seadn.io/gcs/files/0a085499e0f3800321618af356c5d36b.png?auto=format&dpr=1&w=1000"
+                  src={collection.imageLink}
                   alt=""
                   className="item-page__img"
                 />
@@ -68,16 +111,16 @@ export default function ItemPage() {
                 to={"/collection"}
                 className="item-page__collection light-blue"
               >
-                Meebits
+                {collection.collection}
               </Link>
-              <h1 className="item-page__name">Meebit #18854</h1>
+              <h1 className="item-page__name">{collection.title}</h1>
               <span className="item-page__owner">
                 Owned by{" "}
                 <Link
                   to={"/user"}
                   className="light-blue item-page__owner__link"
                 >
-                  shilpixels
+                  {collection.owner}
                 </Link>
               </span>
               <div className="item-page__details">
@@ -86,14 +129,14 @@ export default function ItemPage() {
                     icon={faEye}
                     className="item-page__detail__icon"
                   />
-                  <span className="item-page__detail__text">324 views</span>
+                  <span className="item-page__detail__text">{collection.views} views</span>
                 </div>
                 <div className="item-page__detail">
                   <FontAwesomeIcon
                     icon={faHeart}
                     className="item-page__detail__icon"
                   />
-                  <span className="item-page__detail__text">11 favorites</span>
+                  <span className="item-page__detail__text">{collection.favorites} favorites</span>
                 </div>
                 <div className="item-page__detail">
                   <FontAwesomeIcon
@@ -111,9 +154,9 @@ export default function ItemPage() {
                 <div className="item-page__sale__body">
                   <span className="item-page__sale__label">Current price</span>
                   <div className="item-page__sale__price">
-                    <span className="item-page__sale__price__eth">100 ETH</span>
+                    <span className="item-page__sale__price__eth">{collection.ethPrice} ETH</span>
                     <span className="item-page__sale__price__dollars">
-                      $314,884.00
+                      {collection.usdPrice}
                     </span>
                   </div>
                   <div className="item-page__sale__buttons">

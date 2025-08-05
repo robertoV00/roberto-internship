@@ -101,7 +101,7 @@ export default function CollectionItems() {
         <div className="collection-items__body">
           {sortedItems.slice(0, collectionsCount).map((item, index) => (
             <div className="item-column" key={item.id || index}>
-              <Link to={`/item/${item.id}`} className="item">
+              <Link to={`/item/${item.itemId}`} className="item">
                 <figure className="item__img__wrapper">
                   <img
                     src={item.imageLink}
