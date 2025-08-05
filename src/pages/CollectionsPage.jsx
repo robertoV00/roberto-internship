@@ -78,24 +78,24 @@ export default function CollectionsPage() {
         <div className="collections__body">
           {loading ? "loading" : info.slice(0, collectionsCount).map((collection, index) => (
             <div className="collection-column">
-              <Link to="/collection" key={index} className="collection">
+              <Link to={`/collection/${collection.id}`} key={index} className="collection">
                 <img
-                  src={info[index].imageLink}
+                  src={collection.imageLink}
                   alt=""
                   className="collection__img"
                 />
                 <div className="collection__info">
-                  <h3 className="collection__name">{info[index].title}</h3>
+                  <h3 className="collection__name">{collection.title}</h3>
                   <div className="collection__stats">
                     <div className="collection__stat">
                       <span className="collection__stat__label">Floor</span>
-                      <span className="collection__stat__data">{Number(info[index].floor).toFixed(2)} ETH</span>
+                      <span className="collection__stat__data">{Number(collection.floor).toFixed(2)} ETH</span>
                     </div>
                     <div className="collection__stat">
                       <span className="collection__stat__label">
                         Total Volume
                       </span>
-                      <span className="collection__stat__data">{info[index].totalVolume}</span>
+                      <span className="collection__stat__data">{collection.totalVolume} ETH</span>
                     </div>
                   </div>
                 </div>

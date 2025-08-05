@@ -104,7 +104,7 @@ export default function PopularCollections() {
                               <span className="collection__stat__label">
                                 Total Volume
                               </span>
-                              <span className="collection__stat__data">{info[index].totalVolume} ETH</span>
+                              <span className="collection__stat__data">{info[index].totalVolume}</span>
                             </div>
                           </div>
                         </div>

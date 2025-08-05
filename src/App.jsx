@@ -14,8 +14,8 @@ function App({user}) {
       <Nav />
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/collections" element={<CollectionsPage />} />
-        <Route path="/collection/:collectionId" element={<CollectionPage />} />
+        <Route path="/collections/" element={<CollectionsPage />} />
+        <Route path="/collection/:id" element={<CollectionPage />} />
         <Route path="/item" element={<ItemPage />} />
         <Route path="/user/:creatorId" element={<UserPage />} />
       </Routes>
