@@ -7,13 +7,12 @@ import { Link, useParams } from "react-router-dom";
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 
-// ...existing imports...
-
 export default function CollectionItems() {
   const [info, setInfo] = useState([]);
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const [collectionsCount, setCollectionsCount] = useState(12);
+  const [sortOption, setSortOption] = useState(""); // <-- Add sort option state
 
   // Fetch the collection by id
   async function fetchApiData() {
@@ -35,6 +34,14 @@ export default function CollectionItems() {
 
   // Get the collection object
   const collection = info[0];
+
+  // Sort items based on sortOption
+  let sortedItems = [...(collection?.items || [])];
+  if (sortOption === "price-high") {
+    sortedItems.sort((a, b) => Number(b.price) - Number(a.price));
+  } else if (sortOption === "price-low") {
+    sortedItems.sort((a, b) => Number(a.price) - Number(b.price));
+  }
 
   // If loading or no collection, show loading state
   if (loading || !collection) {
@@ -85,16 +92,18 @@ export default function CollectionItems() {
               {collection.items.length} results
             </span>
           </div>
-          <select className="collection-items__header__sort">
-            <option value="" default>
-              Default
-            </option>
-            <option value="">Price high to low</option>
-            <option value="">Price low to high</option>
+          <select
+            className="collection-items__header__sort"
+            value={sortOption}
+            onChange={e => setSortOption(e.target.value)}
+          >
+            <option value="">Default</option>
+            <option value="price-high">Price high to low</option>
+            <option value="price-low">Price low to high</option>
           </select>
         </div>
         <div className="collection-items__body">
-          {collection.items.slice(0, collectionsCount).map((item, index) => (
+          {sortedItems.slice(0, collectionsCount).map((item, index) => (
             <div className="item-column" key={item.id || index}>
               <Link to={`/item/${item.id}`} className="item">
                 <figure className="item__img__wrapper">
@@ -123,6 +132,7 @@ export default function CollectionItems() {
         {collectionsCount < collection.items.length && (
           <button
             className="collections-page__button"
+            style={{ margin: "32px auto 0", display: "block" }}
             onClick={() => setCollectionsCount(prev => prev + 6)}
           >
             Load more
