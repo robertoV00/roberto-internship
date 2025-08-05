@@ -1,10 +1,77 @@
 import { faEye } from "@fortawesome/free-regular-svg-icons";
 import { faShoppingBag } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
-import { Link } from "react-router-dom";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
+
+// ...existing imports...
 
 export default function CollectionItems() {
+  const [info, setInfo] = useState([]);
+  const { id } = useParams();
+  const [loading, setLoading] = useState(true);
+  const [collectionsCount, setCollectionsCount] = useState(12);
+
+  // Fetch the collection by id
+  async function fetchApiData() {
+    try {
+      setLoading(true);
+      const { data } = await axios.get(`https://remote-internship-api-production.up.railway.app/collection/${id}`);
+      setInfo([data.data]);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    fetchApiData();
+  }, []);
+
+  // Get the collection object
+  const collection = info[0];
+
+  // If loading or no collection, show loading state
+  if (loading || !collection) {
+    return (
+      <section id="collection-items">
+        <div className="row collection-items__row">
+          <div className="collection-items__body">
+            {[...Array(collectionsCount)].map((_, idx) => (
+              <div className="item-column" key={idx}>
+                <div className="item">
+                  <figure className="item__img__wrapper">
+                    <Skeleton width={180} height={180} />
+                  </figure>
+                  <div className="item__details">
+                    <span className="item__details__name">
+                      <Skeleton width={100} />
+                    </span>
+                    <span className="item__details__price">
+                      <Skeleton width={60} />
+                    </span>
+                    <span className="item__details__last-sale">
+                      <Skeleton width={80} />
+                    </span>
+                  </div>
+                  <div className="item__see-more">
+                    <Skeleton width={80} height={32} />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // Display items with "load more" functionality
   return (
     <section id="collection-items">
       <div className="row collection-items__row">
@@ -15,7 +82,7 @@ export default function CollectionItems() {
               Live
             </span>
             <span className="collection-items__header__results">
-              10 results
+              {collection.items.length} results
             </span>
           </div>
           <select className="collection-items__header__sort">
@@ -27,21 +94,21 @@ export default function CollectionItems() {
           </select>
         </div>
         <div className="collection-items__body">
-          {new Array(8).fill(0).map((_, index) => (
-            <div className="item-column">
-              <Link to={"/item"} key={index} className="item">
+          {collection.items.slice(0, collectionsCount).map((item, index) => (
+            <div className="item-column" key={item.id || index}>
+              <Link to={`/item/${item.id}`} className="item">
                 <figure className="item__img__wrapper">
                   <img
-                    src="https://i.seadn.io/gcs/files/0a085499e0f3800321618af356c5d36b.png?auto=format&dpr=1&w=384"
-                    alt=""
+                    src={item.imageLink}
+                    alt={item.name}
                     className="item__img"
                   />
                 </figure>
                 <div className="item__details">
-                  <span className="item__details__name">Meebit #0001</span>
-                  <span className="item__details__price">0.98 ETH</span>
+                  <span className="item__details__name">{item.title}</span>
+                  <span className="item__details__price">{item.price} ETH</span>
                   <span className="item__details__last-sale">
-                    Last sale: 7.45 ETH
+                    Last sale: {item.lastSale} ETH
                   </span>
                 </div>
                 <div className="item__see-more">
@@ -53,9 +120,16 @@ export default function CollectionItems() {
               </Link>
             </div>
           ))}
+        {collectionsCount < collection.items.length && (
+          <button
+            className="collections-page__button"
+            onClick={() => setCollectionsCount(prev => prev + 6)}
+          >
+            Load more
+          </button>
+        )}
         </div>
       </div>
-      <button className="collection-page__button">Load more</button>
     </section>
   );
 }
