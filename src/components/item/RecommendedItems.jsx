@@ -1,9 +1,38 @@
 import { faShoppingBag, faTableCells } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
+import axios from "axios";
 
 export default function RecommendedItems() {
+
+      const [info, setInfo] = useState([]);
+      const { id } = useParams();
+      const [loading, setLoading] = useState(true);
+      const collection = info[0]; //this is to find the collection by id
+    
+      // Fetch the collection by id
+      async function fetchApiData() {
+        try {
+          setLoading(true);
+          const { data } = await axios.get(`https://remote-internship-api-production.up.railway.app/item/${id}`);
+          setInfo([data.data]);
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        } finally {
+          setLoading(false);
+        }
+      }
+    
+      useEffect(() => {
+        window.scrollTo(0, 0);
+        fetchApiData();
+      }, []);
+
+
+
   return (
     <section id="recommended-items">
       <div className="container">
