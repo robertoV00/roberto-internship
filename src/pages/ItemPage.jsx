@@ -13,21 +13,19 @@ import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 import axios from "axios";
 
+
 export default function ItemPage() {
     const [info, setInfo] = useState([]);
     const { id } = useParams();
     const [loading, setLoading] = useState(true);
-    const collection = info[0]; //this is to find the collection by id
+    const item = info[0]; //this is to find the collection by id
 
     const [timeLeft, setTimeLeft] = useState({
-      hours: 2,
-      minutes: 30,
-      seconds: 56
-    })
-    
-
-
-  
+        hours: 2,
+        minutes: 30,
+        seconds: 56
+    });
+ 
     // Fetch the collection by id
     async function fetchApiData() {
       try {
@@ -40,12 +38,12 @@ export default function ItemPage() {
         setLoading(false);
       }
     }
-  
+ 
     useEffect(() => {
       window.scrollTo(0, 0);
       fetchApiData();
     }, [id]);
-    
+
     useEffect(() => {
         const timer = setInterval(() => {
             setTimeLeft(prevTime => {
@@ -73,7 +71,12 @@ export default function ItemPage() {
         return () => clearInterval(timer);
     }, []);
 
-    if (loading || !collection) {
+
+    //take the collectionId, pass it through as a prop to the recommendedItems page and tag
+    //that to end of the api url as the id
+
+
+    if (loading || !item) {
       return (
         <section id="item-info">
           <div className="container">
@@ -113,6 +116,7 @@ export default function ItemPage() {
         </section>
       );
     }
+
 
   return (
     <>
@@ -219,7 +223,13 @@ export default function ItemPage() {
         </div>
       </section>
 
+
       <RecommendedItems collectionId={item.collectionId}/>
     </>
   );
 }
+
+
+
+
+
