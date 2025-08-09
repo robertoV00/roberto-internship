@@ -17,7 +17,7 @@ export default function ItemPage() {
     const [info, setInfo] = useState([]);
     const { id } = useParams();
     const [loading, setLoading] = useState(true);
-    const collection = info[0]; //this is to find the collection by id
+    const item = info[0]; //this is to find the collection by id
   
     // Fetch the collection by id
     async function fetchApiData() {
@@ -37,8 +37,10 @@ export default function ItemPage() {
       fetchApiData();
     }, []);
 
+    //take the collectionId, pass it through as a prop to the recommendedItems page and tag
+    //that to end of the api url as the id
 
-    if (loading || !collection) {
+    if (loading || !item) {
       return (
         <section id="item-info">
           <div className="container">
@@ -52,7 +54,7 @@ export default function ItemPage() {
                       <Skeleton width={30} height={18} />
                     </div>
                   </div>
-                  <Skeleton width={400} height={400} />
+                  <Skeleton width={700} height={785} />
                 </figure>
               </div>
               <div className="item-page__right">
@@ -96,11 +98,11 @@ export default function ItemPage() {
                       icon={faHeart}
                       className="item-page__img__icon"
                     />
-                    <span className="item-page__img__likes__text">{collection.favorites}</span>
+                    <span className="item-page__img__likes__text">{item.favorites}</span>
                   </div>
                 </div>
                 <img
-                  src={collection.imageLink}
+                  src={item.imageLink}
                   alt=""
                   className="item-page__img"
                 />
@@ -111,16 +113,16 @@ export default function ItemPage() {
                 to={"/collection"}
                 className="item-page__collection light-blue"
               >
-                {collection.collection}
+                {item.collection}
               </Link>
-              <h1 className="item-page__name">{collection.title}</h1>
+              <h1 className="item-page__name">{item.title}</h1>
               <span className="item-page__owner">
                 Owned by{" "}
                 <Link
                   to={"/user"}
                   className="light-blue item-page__owner__link"
                 >
-                  {collection.owner}
+                  {item.owner}
                 </Link>
               </span>
               <div className="item-page__details">
@@ -129,14 +131,14 @@ export default function ItemPage() {
                     icon={faEye}
                     className="item-page__detail__icon"
                   />
-                  <span className="item-page__detail__text">{collection.views} views</span>
+                  <span className="item-page__detail__text">{item.views} views</span>
                 </div>
                 <div className="item-page__detail">
                   <FontAwesomeIcon
                     icon={faHeart}
                     className="item-page__detail__icon"
                   />
-                  <span className="item-page__detail__text">{collection.favorites} favorites</span>
+                  <span className="item-page__detail__text">{item.favorites} favorites</span>
                 </div>
                 <div className="item-page__detail">
                   <FontAwesomeIcon
@@ -154,9 +156,9 @@ export default function ItemPage() {
                 <div className="item-page__sale__body">
                   <span className="item-page__sale__label">Current price</span>
                   <div className="item-page__sale__price">
-                    <span className="item-page__sale__price__eth">{collection.ethPrice} ETH</span>
+                    <span className="item-page__sale__price__eth">{item.ethPrice} ETH</span>
                     <span className="item-page__sale__price__dollars">
-                      {collection.usdPrice}
+                      {item.usdPrice}
                     </span>
                   </div>
                   <div className="item-page__sale__buttons">
@@ -180,7 +182,7 @@ export default function ItemPage() {
         </div>
       </section>
 
-      <RecommendedItems />
+      <RecommendedItems collectionId={item.collectionId}/>
     </>
   );
 }

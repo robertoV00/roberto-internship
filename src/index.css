@@ -772,7 +772,10 @@ footer {
   COLLECTIONS PAGE
 
 */
-
+.swiper {
+  width: 100%;
+  height: 100%;
+}
 .swiper-button-next,
 .swiper-button-prev {
   color: #ff5353;
@@ -1447,6 +1450,11 @@ ITEM PAGE
   flex-wrap: wrap;
 }
 
+.recommended-items__body .swiper-slide {
+  width: calc((100% / 6) - 20px + (20px / 6)) !important;
+  margin-right: 20px;
+}
+
 .recommended-items__footer {
   display: flex;
   justify-content: center;
@@ -1477,6 +1485,9 @@ ITEM PAGE
   background-color: rgb(18 18 18 / 8%);
 }
 
+.recommended__item__column {
+  width: 100%;
+}
 /* 
 
 USER PAGE
@@ -1610,12 +1621,16 @@ USER PAGE
   max-width: 240px;
 }
 
+.item-column-skeleton {
+  width: 100%;
+}
+
 /* Media Queries */
 
 @media (max-width: 1760px) {
-  .item-column {
-    width: calc((100% / 5) - 16px + (16px / 5));
-  }
+  /* .item-column {
+    width: 100%;
+  } */
 }
 
 @media (max-width: 1600px) {
@@ -1626,6 +1641,12 @@ USER PAGE
   .selected-collection {
     height: calc(-21.12px + 33vw);
   }
+
+  .recommended-items__body .swiper-slide {
+    width: calc((100% / 5) - 10px + (10px / 5)) !important;
+  }
+
+  
 
   /* 
   
@@ -1645,9 +1666,9 @@ USER PAGE
 }
 
 @media (max-width: 1440px) {
-  .item-column {
-    width: calc((100% / 4) - 16px + (16px / 4));
-  }
+  /* .recommended__item__column {
+    width: 10px;
+  } */
 }
 
 @media (max-width: 1200px) {
@@ -1656,6 +1677,10 @@ USER PAGE
   .collection-column {
     width: 100%;
   
+  }
+
+  .recommended-items__body .swiper-slide {
+    width: calc((100% / 4) - 20px + (20px / 4)) !important;
   }
 
   .footer__top {
@@ -1764,9 +1789,9 @@ USER PAGE
     line-height: 20px;
   }
 
-  .item-column {
+  /* .item-column {
     width: calc((100% / 3) - 16px + (16px / 3));
-  }
+  } */
 
   /* Item Page */
 
@@ -1788,6 +1813,10 @@ USER PAGE
   .item-page__sale__buy,
   .item-page__sale__offer {
     width: 100%;
+  }
+
+  .recommended-items__body .swiper-slide {
+    width: calc((100% / 3) - 20px + (20px / 3)) !important;
   }
 }
 
@@ -1836,6 +1865,10 @@ USER PAGE
     width: 50%;
   }
 
+  .recommended-items__body .swiper-slide {
+    width: calc((100% / 2) - 20px + (20px / 2)) !important;
+  }
+
   /* 
   
   COLLECTIONS PAGE
@@ -1853,9 +1886,6 @@ USER PAGE
 
   */
 
-  .item-column {
-    width: calc((100% / 2) - 16px + (16px / 2));
-  }
 }
 
 @media (max-width: 640px) {
@@ -1916,8 +1946,8 @@ USER PAGE
     width: calc((100% / 1) - 16px + (16px / 1));
   }
 
-  .item-column {
-    width: calc((100% / 1) - 16px + (16px / 1));
+  .recommended-items__body .swiper-slide {
+    width: calc(100% - 20px) !important;
   }
 }
 
