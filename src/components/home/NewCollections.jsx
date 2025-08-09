@@ -13,6 +13,8 @@ import 'swiper/swiper-bundle.css'
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { Navigation, Pagination, Scrollbar} from 'swiper/modules';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 export default function NewCollections() {
 
@@ -33,11 +35,27 @@ export default function NewCollections() {
     }
   }
 
-
   useEffect(() => {
     console.log(info)
     fetchApiData();
+    
+    // Initialize AOS
+    AOS.init({
+      duration: 1000, // Default duration
+      once: true, // Animation happens only once
+      offset: 200, // Higher offset means animation triggers earlier when scrolling
+      delay: 0, // No global delay
+      easing: 'ease-out', // Smooth easing
+      mirror: false, // Don't repeat animation when scrolling up
+    });
   }, [])
+
+  // Refresh AOS when loading changes
+  useEffect(() => {
+    if (!loading) {
+      AOS.refresh();
+    }
+  }, [loading]);
 
   if (loading) {
       return (
@@ -87,60 +105,64 @@ export default function NewCollections() {
     <section id="new-collections">
       <div className="container">
         <div className="row">
-          <h2 className="new-collections__title">New Collections</h2>
+          <h2 className="new-collections__title" data-aos="fade-up" data-aos-duration="800">
+            New Collections
+          </h2>
           <div className="arrow__swiper__left">
             <FontAwesomeIcon icon={faCircleLeft} />
           </div>
           <div className="arrow__swiper__right">
             <FontAwesomeIcon icon={faCircleRight} />
           </div>
-          <Swiper
-            modules={[Navigation, Scrollbar]}
-            slidesPerView={6}
-            slidesPerGroup={1}
-            spaceBetween={30}
-            navigation={true}
-            loop={true}
-            breakpoints={{
-              1600: { slidesPerView: 6 },
-              1200: { slidesPerView: 4 },
-              1024: { slidesPerView: 3 },
-              900:  { slidesPerView: 3 },
-              600:  { slidesPerView: 2 },
-              0:    { slidesPerView: 1 }
-            }}
-          >
-            <div className="new-collections__body">
-              {loading ? "loading" : info.map((_, index) => (
-                <SwiperSlide key={index}>
-                  <div className="collection-column new__collections__column">
-                    <Link to="/collection" key={index} className="collection">
-                      <img
-                        src={info[index].imageLink}
-                        alt=""
-                        className="collection__img"
-                      />
-                      <div className="collection__info">
-                        <h3 className="collection__name">{info[index].title}</h3>
-                        <div className="collection__stats">
-                          <div className="collection__stat">
-                            <span className="collection__stat__label">Floor</span>
-                            <span className="collection__stat__data">{info[index].floor} ETH</span>
-                          </div>
-                          <div className="collection__stat">
-                            <span className="collection__stat__label">
-                              Total Volume
-                            </span>
-                            <span className="collection__stat__data">{info[index].totalVolume} ETH</span>
+          <div data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">
+            <Swiper
+              modules={[Navigation, Scrollbar]}
+              slidesPerView={6}
+              slidesPerGroup={1}
+              spaceBetween={30}
+              navigation={true}
+              loop={true}
+              breakpoints={{
+                1600: { slidesPerView: 6 },
+                1200: { slidesPerView: 4 },
+                1024: { slidesPerView: 3 },
+                900:  { slidesPerView: 3 },
+                600:  { slidesPerView: 2 },
+                0:    { slidesPerView: 1 }
+              }}
+            >
+              <div className="new-collections__body">
+                {loading ? "loading" : info.map((_, index) => (
+                  <SwiperSlide key={index}>
+                    <div className="collection-column new__collections__column">
+                      <Link to="/collection" key={index} className="collection">
+                        <img
+                          src={info[index].imageLink}
+                          alt=""
+                          className="collection__img"
+                        />
+                        <div className="collection__info">
+                          <h3 className="collection__name">{info[index].title}</h3>
+                          <div className="collection__stats">
+                            <div className="collection__stat">
+                              <span className="collection__stat__label">Floor</span>
+                              <span className="collection__stat__data">{info[index].floor} ETH</span>
+                            </div>
+                            <div className="collection__stat">
+                              <span className="collection__stat__label">
+                                Total Volume
+                              </span>
+                              <span className="collection__stat__data">{info[index].totalVolume} ETH</span>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </Link>
-                  </div>
-                </SwiperSlide>
-              ))}
-            </div>
-          </Swiper>
+                      </Link>
+                    </div>
+                  </SwiperSlide>
+                ))}
+              </div>
+            </Swiper>
+          </div>
         </div>
         
       </div>

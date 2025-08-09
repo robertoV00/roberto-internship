@@ -5,6 +5,8 @@ import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 
 export default function UserPage() {
+
+  AOS.init()
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
