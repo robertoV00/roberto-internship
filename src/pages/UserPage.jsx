@@ -1,19 +1,51 @@
 import { faEthereum } from "@fortawesome/free-brands-svg-icons";
 import { faShoppingBag } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 
 export default function UserPage() {
+
+    const [info, setInfo] = useState([]);
+    const { id } = useParams();
+    const [loading, setLoading] = useState(true);
+    const [collectionsCount, setCollectionsCount] = useState(12);
+    const [sortOption, setSortOption] = useState(""); // <-- Add sort option state
+  
+    async function fetchApiData() {
+      try {
+        setLoading(true);
+        const { data } = await axios.get(`https://remote-internship-api-production.up.railway.app/user/${id}`);
+        setInfo(data.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
+    fetchApiData();
+  }, [id]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!info) {
+    return <div>User not found</div>;
+  }
+
+  
 
   return (
     <>
       <header
         style={{
-          backgroundImage: `url('https://i.seadn.io/s/raw/files/40c1f630bda7d55d859d9107cc86191f.png?auto=format&dpr=1&w=1920')`,
+          backgroundImage: `url('${info.imageLink}')`,
         }}
         id="user-header"
       ></header>
@@ -23,23 +55,23 @@ export default function UserPage() {
           <div className="user-info__wrapper">
             <figure className="user-info__img__wrapper">
               <img
-                src="https://i.seadn.io/s/raw/files/55ada1658290f91266c83f075ea03233.png?auto=format&dpr=1&w=256"
+                src={info.profilePicture}
                 alt=""
                 className="user-info__img"
               />
             </figure>
-            <h1 className="user-info__name">shilpixels</h1>
+            <h1 className="user-info__name">{info.name}</h1>
             <div className="user-info__details">
               <span className="user-info__wallet">
                 <FontAwesomeIcon
                   icon={faEthereum}
                   className="user-info__wallet__icon"
                 />
-                <span className="user-info__wallet__data">shilpixels.eth</span>
+                <span className="user-info__wallet__data">{info.walletCode}</span>
               </span>
               <span className="user-info__year">
                 <span className="user-info__year__data">
-                  Joined Feburary 2021
+                  Joined {info.creationDate}
                 </span>
               </span>
             </div>
