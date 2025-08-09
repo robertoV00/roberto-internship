@@ -50,7 +50,7 @@ export default function CollectionHeader() {
               className="collection-header__img"
             />
             <div className="collection-header__name">{collection.title}</div>
-            <Link to={'/user'} className="collection-header__author">{collection.creator}</Link>
+            <Link to={`/user/${collection.creatorId}`} className="collection-header__author">{collection.creator}</Link>
           </div>
           <div className="collection-header__right">
             <div className="collection-header__columns">
