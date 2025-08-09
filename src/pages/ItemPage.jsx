@@ -35,7 +35,7 @@ export default function ItemPage() {
     useEffect(() => {
       window.scrollTo(0, 0);
       fetchApiData();
-    }, []);
+    }, [id]);
 
     //take the collectionId, pass it through as a prop to the recommendedItems page and tag
     //that to end of the api url as the id
