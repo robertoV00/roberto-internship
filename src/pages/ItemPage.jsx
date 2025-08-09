@@ -18,6 +18,15 @@ export default function ItemPage() {
     const { id } = useParams();
     const [loading, setLoading] = useState(true);
     const collection = info[0]; //this is to find the collection by id
+
+    const [timeLeft, setTimeLeft] = useState({
+      hours: 2,
+      minutes: 30,
+      seconds: 56
+    })
+    
+
+
   
     // Fetch the collection by id
     async function fetchApiData() {
@@ -36,7 +45,33 @@ export default function ItemPage() {
       window.scrollTo(0, 0);
       fetchApiData();
     }, [id]);
+    
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setTimeLeft(prevTime => {
+                let { hours, minutes, seconds } = prevTime;
+                
+                if (seconds > 0) {
+                    seconds--;
+                } else if (minutes > 0) {
+                    minutes--;
+                    seconds = 59;
+                } else if (hours > 0) {
+                    hours--;
+                    minutes = 59;
+                    seconds = 59;
+                } else {
+                    // this is when the timer reaches zero
+                    return { hours: 0, minutes: 0, seconds: 0 };
+                }
+                
+                return { hours, minutes, seconds };
+            });
+        }, 1000);
 
+        // this clears the timer
+        return () => clearInterval(timer);
+    }, []);
 
     if (loading || !collection) {
       return (
@@ -149,7 +184,11 @@ export default function ItemPage() {
               <div className="item-page__sale">
                 <div className="item-page__sale__header">
                   <div className="green-pulse"></div>
-                  <span>Sale ends in 2h 30m 56s</span>
+                  <span>Sale ends in
+                    <span className="item-page__hour"> {timeLeft.hours}h</span> 
+                    <span className="item-page__minutes"> {timeLeft.minutes}m</span> 
+                    <span className="item-page__seconds"> {timeLeft.seconds}s</span>
+                  </span>
                 </div>
                 <div className="item-page__sale__body">
                   <span className="item-page__sale__label">Current price</span>
