@@ -136,7 +136,7 @@ export default function PopularCollections() {
                 {loading ? "loading" : info.map((_, index) => (
                   <SwiperSlide key={index}>
                     <div className="collection-column popular__collections__column">
-                        <Link to="/collection" key={index} className="collection">
+                        <Link to={`/collection/${info[index].collectionId}`} key={index} className="collection">
                           <img
                             src={info[index].imageLink}
                             alt=""

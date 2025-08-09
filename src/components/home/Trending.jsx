@@ -55,7 +55,7 @@ export default function Trending() {
               <div className="trending-column__body">
                 {loading ? "loading" : new Array(5).fill(0).map((_, index) => (
                   <Link
-                    to={`/collection${info.collectionId}`}
+                    to={`/collection/${info[index].collectionId}`}
                     key={index}
                     className="trending-collection"
                   >
