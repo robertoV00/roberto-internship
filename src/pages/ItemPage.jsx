@@ -35,7 +35,7 @@ export default function ItemPage() {
     useEffect(() => {
       window.scrollTo(0, 0);
       fetchApiData();
-    }, []);
+    }, [id]);
 
 
     if (loading || !collection) {
