@@ -1,19 +1,52 @@
 import { faEthereum } from "@fortawesome/free-brands-svg-icons";
 import { faShoppingBag } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 
 export default function UserPage() {
+
+    const [info, setInfo] = useState([]);
+    const { id } = useParams();
+    const [loading, setLoading] = useState(true);
+    const [collectionsCount, setCollectionsCount] = useState(12);
+    const [sortOption, setSortOption] = useState(""); // <-- Add sort option state
+  
+    async function fetchApiData() {
+      try {
+        setLoading(true);
+        const { data } = await axios.get(`https://remote-internship-api-production.up.railway.app/user/${id}`);
+        setInfo(data.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
+    fetchApiData();
+  }, [id]);
+
+  let sortedItems = [...(info?.items || [])];
+  if (sortOption === "price-high") {
+    sortedItems.sort((a, b) => Number(b.price) - Number(a.price));
+  } else if (sortOption === "price-low") {
+    sortedItems.sort((a, b) => Number(a.price) - Number(b.price));
+  }
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>
       <header
         style={{
-          backgroundImage: `url('https://i.seadn.io/s/raw/files/40c1f630bda7d55d859d9107cc86191f.png?auto=format&dpr=1&w=1920')`,
+          backgroundImage: `url('${info.imageLink}')`,
         }}
         id="user-header"
       ></header>
@@ -23,23 +56,23 @@ export default function UserPage() {
           <div className="user-info__wrapper">
             <figure className="user-info__img__wrapper">
               <img
-                src="https://i.seadn.io/s/raw/files/55ada1658290f91266c83f075ea03233.png?auto=format&dpr=1&w=256"
+                src={info.profilePicture}
                 alt=""
                 className="user-info__img"
               />
             </figure>
-            <h1 className="user-info__name">shilpixels</h1>
+            <h1 className="user-info__name">{info.name}</h1>
             <div className="user-info__details">
               <span className="user-info__wallet">
                 <FontAwesomeIcon
                   icon={faEthereum}
                   className="user-info__wallet__icon"
                 />
-                <span className="user-info__wallet__data">shilpixels.eth</span>
+                <span className="user-info__wallet__data">{info.walletCode}</span>
               </span>
               <span className="user-info__year">
                 <span className="user-info__year__data">
-                  Joined Feburary 2021
+                  Joined {info.creationDate}
                 </span>
               </span>
             </div>
@@ -51,44 +84,86 @@ export default function UserPage() {
         <div className="row user-items__row">
           <div className="user-items__header">
             <div className="user-items__header__left">
-              <span className="user-items__header__text">163 items</span>
+              <span className="user-items__header__text">
+                {info?.items?.length || 0} items
+              </span>
             </div>
-            <select className="user-items__header__sort">
+            <select 
+              className="user-items__header__sort"
+              value={sortOption}
+              onChange={e => setSortOption(e.target.value)}
+            >
               <option value="">Recently purchased</option>
-              <option value="">Price high to low</option>
-              <option value="">Price low to high</option>
+              <option value="price-high">Price high to low</option>
+              <option value="price-low">Price low to high</option>
             </select>
           </div>
           <div className="user-items__body">
-            {new Array(10).fill(0).map((_, index) => (
-              <div className="item-column" key={index}>
-                <Link to={"/item"} className="item">
-                  <figure className="item__img__wrapper">
-                    <img
-                      src="https://i.seadn.io/gcs/files/0a085499e0f3800321618af356c5d36b.png?auto=format&dpr=1&w=384"
-                      alt=""
-                      className="item__img"
-                    />
-                  </figure>
-                  <div className="item__details">
-                    <span className="item__details__name">Meebit #0001</span>
-                    <span className="item__details__price">0.98 ETH</span>
-                    <span className="item__details__last-sale">
-                      Last sale: 7.45 ETH
-                    </span>
-                  </div>
-                  <a className="item__see-more" href="#">
-                    <button className="item__see-more__button">See More</button>
-                    <div className="item__see-more__icon">
-                      <FontAwesomeIcon icon={faShoppingBag} />
+            {loading ? (
+              [...Array(collectionsCount)].map((_, idx) => (
+                <div className="item-column" key={idx}>
+                  <div className="item">
+                    <figure className="item__img__wrapper">
+                      <Skeleton width={180} height={180} />
+                    </figure>
+                    <div className="item__details">
+                      <span className="item__details__name">
+                        <Skeleton width={100} />
+                      </span>
+                      <span className="item__details__price">
+                        <Skeleton width={60} />
+                      </span>
+                      <span className="item__details__last-sale">
+                        <Skeleton width={80} />
+                      </span>
                     </div>
-                  </a>
-                </Link>
-              </div>
-            ))}
+                    <div className="item__see-more">
+                      <Skeleton width={80} height={32} />
+                    </div>
+                  </div>
+                </div>
+              ))
+            ) : (
+
+              sortedItems.slice(0, collectionsCount).map((item, index) => (
+                <div className="item-column" key={item.itemId || index}>
+                  <Link to={`/item/${item.itemId}`} className="item">
+                    <figure className="item__img__wrapper">
+                      <img
+                        src={item.imageLink}
+                        alt={item.title}
+                        className="item__img"
+                      />
+                    </figure>
+                    <div className="item__details">
+                      <span className="item__details__name">{item.title}</span>
+                      <span className="item__details__price">{item.price} ETH</span>
+                      <span className="item__details__last-sale">
+                        Last sale: {item.lastSale} ETH
+                      </span>
+                    </div>
+                    <div className="item__see-more">
+                      <button className="item__see-more__button">See More</button>
+                      <div className="item__see-more__icon">
+                        <FontAwesomeIcon icon={faShoppingBag} />
+                      </div>
+                    </div>
+                  </Link>
+                </div>
+              ))
+            )}
+          {!loading && collectionsCount < (info?.items?.length || 0) && (
+            <button
+              className="collection-page__button"
+              style={{ margin: "32px auto 0", display: "block" }}
+              onClick={() => setCollectionsCount(prev => prev + 6)}
+            >
+              Load more
+            </button>
+          )}
           </div>
+          {/* Load more button */}
         </div>
-        <button className="collection-page__button">Load more</button>
       </section>
     </>
   );
