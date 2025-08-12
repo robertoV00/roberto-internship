@@ -147,7 +147,7 @@ export default function ItemPage() {
             </div>
             <div className="item-page__right">
               <Link
-                to={"/collection"}
+                to={`/collection/${item.collectionId}`}
                 className="item-page__collection light-blue"
               >
                 {item.collection}
@@ -156,7 +156,7 @@ export default function ItemPage() {
               <span className="item-page__owner">
                 Owned by{" "}
                 <Link
-                  to={"/user"}
+                  to={`/user/${item.ownerId}`}
                   className="light-blue item-page__owner__link"
                 >
                   {item.owner}
