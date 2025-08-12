@@ -37,32 +37,28 @@ export default function CollectionInfo() {
         <div className="row">
           <div className="collection-info__wrapper">
             <p className="collection-info__description">
-              <Skeleton count={3} height={18} />
+              <Skeleton count={4} height={18} />
             </p>
             <div className="collection-info__details">
               <span className="collection-info__detail">
-                Items
                 <span className="collection-info__detail__data">
-                  <Skeleton width={30} height={16} inline />
+                  <Skeleton width={50} height={16} inline />
                 </span>
               </span>
-              ·
+              
               <span className="collection-info__detail">
-                Created
+                <span className="collection-info__detail__data">
+                  <Skeleton width={160} height={16} inline />
+                </span>
+              </span>
+              
+              <span className="collection-info__detail">
                 <span className="collection-info__detail__data">
                   <Skeleton width={60} height={16} inline />
                 </span>
               </span>
-              ·
+              
               <span className="collection-info__detail">
-                Creator earnings
-                <span className="collection-info__detail__data">
-                  <Skeleton width={30} height={16} inline />
-                </span>
-              </span>
-              ·
-              <span className="collection-info__detail">
-                Chain
                 <span className="collection-info__detail__data">
                   <Skeleton width={60} height={16} inline />
                 </span>
