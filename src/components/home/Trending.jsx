@@ -5,13 +5,14 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 export default function Trending() {
 
   const [info, setInfo] = useState([])
   const [loading, setLoading] = useState(true);
   const [showSkeleton, setShowSkeleton] = useState(true);
-  const [animate, setAnimate] = useState(false);
 
   async function fetchApiData() {
     try {
@@ -33,10 +34,29 @@ export default function Trending() {
   useEffect(() => {
     console.log(info)
     fetchApiData();
+    
+    // Initialize AOS with settings that disable scroll-based animations
+    AOS.init({
+      duration: 1000,
+      once: true, // Animation happens only once
+      offset: 5, // Set very negative offset so animations trigger immediately
+      delay: 0,
+      easing: 'ease-out',
+      mirror: false, // Don't repeat animation when scrolling up
+    });
+
+    // Force trigger animations immediately after initialization
     setTimeout(() => {
-      setAnimate(true);
+      AOS.refresh();
     }, 100);
   }, [])
+
+  // Remove the scroll-based refresh effect
+  // useEffect(() => {
+  //   if (!loading) {
+  //     AOS.refresh();
+  //   }
+  // }, [loading]);
 
   // Control when to show actual content vs skeleton
   const shouldShowSkeleton = loading || showSkeleton;
@@ -79,158 +99,131 @@ export default function Trending() {
 );
 
   return (
-    <>
-      <style jsx>{`
-        .fade-up-load {
-          opacity: 0;
-          transform: translateY(30px);
-          transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-        }
-        
-        .fade-up-load.animate {
-          opacity: 1;
-          transform: translateY(0);
-        }
-        
-        .fade-up-load-delayed {
-          opacity: 0;
-          transform: translateY(30px);
-          transition: opacity 1s ease-out, transform 1s ease-out;
-          transition-delay: 0.2s;
-        }
-        
-        .fade-up-load-delayed.animate {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      `}</style>
-      
-      <section id="trending">
-        <div className="container">
-          <div className="row trending__row">
-            <div className={`trending__header fade-up-load ${animate ? 'animate' : ''}`}>
-              <h2 className="trending__header__title">Trending NFTs</h2>
-              <Link className="trending__header__button" to={"/collections"}>
-                View All
-              </Link>
-            </div>
-            <div className={`trending__body fade-up-load-delayed ${animate ? 'animate' : ''}`}>
-              <SkeletonTheme baseColor="#dfdfdfff" highlightColor="#dfdfdfff">
-                <div className="trending-column">
-                  <div className="trending-column__header">
-                    <div className="trending-column__header__rank">#</div>
-                    <div className="trending-column__header__collection">
-                      Collection
-                    </div>
-                    <div className="trending-column__header__price">
-                      Floor Price
-                    </div>
-                    <div className="trending-column__header__price">Volume</div>
+    <section id="trending">
+      <div className="container">
+        <div className="row trending__row">
+          <div className="trending__header" data-aos="fade-up" data-aos-duration="800" data-aos-mirror="false">
+            <h2 className="trending__header__title">Trending NFTs</h2>
+            <Link className="trending__header__button" to={"/collections"}>
+              View All
+            </Link>
+          </div>
+          <div className="trending__body" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200" data-aos-mirror="false">
+            <SkeletonTheme baseColor="#dfdfdfff" highlightColor="#dfdfdfff">
+              <div className="trending-column">
+                <div className="trending-column__header">
+                  <div className="trending-column__header__rank">#</div>
+                  <div className="trending-column__header__collection">
+                    Collection
                   </div>
-                  <div className="trending-column__body">
-                    {shouldShowSkeleton ? (
-                      Array.from({ length: 5 }, (_, index) => (
-                        <TrendingCollectionSkeleton key={index} rank={index + 1} />
-                      ))
-                    ) : (
-                      new Array(5).fill(0).map((_, index) => (
-                        <Link
-                          to={`/collection/${info[index].collectionId}`}
-                          key={index}
-                          className="trending-collection"
-                        >
-                          <div className="trending-collection__rank">{info[index].rank}</div>
-                          <div className="trending-collection__collection">
-                            <figure className="trending-collection__img__wrapper">
-                              <img
-                                src={info[index].imageLink}
-                                alt=""
-                                className="trending-collection__img"
-                              />
-                            </figure>
-                            <div className="trending-collection__name">
-                              {info[index].title}
-                            </div>
-                            <img
-                              src={VerifiedIcon}
-                              className="trending-collection__verified"
-                            />
-                          </div>
-                          <div className="trending-collection__price">
-                            <span className="trending-collection__price__span">
-                              {Number(info[index].floor).toFixed(2)} ETH
-                            </span>
-                          </div>
-                          <div className="trending-collection__volume">
-                            <span className="trending-collection__volume__span">
-                              {info[index].totalVolume} ETH
-                            </span>
-                          </div>
-                        </Link>
-                      ))
-                    )}
+                  <div className="trending-column__header__price">
+                    Floor Price
                   </div>
+                  <div className="trending-column__header__price">Volume</div>
                 </div>
-                <div className="trending-column">
-                  <div className="trending-column__header trending-column__header2">
-                    <div className="trending-column__header__rank">#</div>
-                    <div className="trending-column__header__collection">
-                      Collection
-                    </div>
-                    <div className="trending-column__header__price">
-                      Floor Price
-                    </div>
-                    <div className="trending-column__header__price">Volume</div>
-                  </div>
-                  <div className="trending-column__body">
-                    {shouldShowSkeleton ? (
-                      Array.from({ length: 5 }, (_, index) => (
-                        <TrendingCollectionSkeleton key={index + 5} rank={index + 6} />
-                      ))
-                    ) : (
-                      new Array(5).fill(0).map((_, index) => (
-                        <Link
-                          to={`/collection/${info[index + 5].collectionId}`}
-                          key={index}
-                          className="trending-collection"
-                        >
-                          <div className="trending-collection__rank">{info[index + 5].rank}</div>
-                          <div className="trending-collection__collection">
-                            <figure className="trending-collection__img__wrapper">
-                              <img
-                                src={info[index + 5].imageLink}
-                                alt=""
-                                className="trending-collection__img"
-                              />
-                            </figure>
-                            <div className="trending-collection__name">
-                              {info[index + 5].title}
-                            </div>
+                <div className="trending-column__body">
+                  {shouldShowSkeleton ? (
+                    Array.from({ length: 5 }, (_, index) => (
+                      <TrendingCollectionSkeleton key={index} rank={index + 1} />
+                    ))
+                  ) : (
+                    new Array(5).fill(0).map((_, index) => (
+                      <Link
+                        to={`/collection/${info[index].collectionId}`}
+                        key={index}
+                        className="trending-collection"
+                      >
+                        <div className="trending-collection__rank">{info[index].rank}</div>
+                        <div className="trending-collection__collection">
+                          <figure className="trending-collection__img__wrapper">
                             <img
-                              src={VerifiedIcon}
-                              className="trending-collection__verified"
+                              src={info[index].imageLink}
+                              alt=""
+                              className="trending-collection__img"
                             />
+                          </figure>
+                          <div className="trending-collection__name">
+                            {info[index].title}
                           </div>
-                          <div className="trending-collection__price">
-                            <span className="trending-collection__price__span">
-                              {Number(info[index + 5].floor).toFixed(2)} ETH
-                            </span>
-                          </div>
-                          <div className="trending-collection__volume">
-                            <span className="trending-collection__volume__span">
-                              {info[index + 5].totalVolume} ETH
-                            </span>
-                          </div>
-                        </Link>
-                      ))
-                    )}
-                  </div>
+                          <img
+                            src={VerifiedIcon}
+                            className="trending-collection__verified"
+                          />
+                        </div>
+                        <div className="trending-collection__price">
+                          <span className="trending-collection__price__span">
+                            {Number(info[index].floor).toFixed(2)} ETH
+                          </span>
+                        </div>
+                        <div className="trending-collection__volume">
+                          <span className="trending-collection__volume__span">
+                            {info[index].totalVolume} ETH
+                          </span>
+                        </div>
+                      </Link>
+                    ))
+                  )}
                 </div>
-              </SkeletonTheme>
-            </div>
+              </div>
+              <div className="trending-column">
+                <div className="trending-column__header trending-column__header2">
+                  <div className="trending-column__header__rank">#</div>
+                  <div className="trending-column__header__collection">
+                    Collection
+                  </div>
+                  <div className="trending-column__header__price">
+                    Floor Price
+                  </div>
+                  <div className="trending-column__header__price">Volume</div>
+                </div>
+                <div className="trending-column__body">
+                  {shouldShowSkeleton ? (
+                    Array.from({ length: 5 }, (_, index) => (
+                      <TrendingCollectionSkeleton key={index + 5} rank={index + 6} />
+                    ))
+                  ) : (
+                    new Array(5).fill(0).map((_, index) => (
+                      <Link
+                        to={`/collection/${info[index + 5].collectionId}`}
+                        key={index}
+                        className="trending-collection"
+                      >
+                        <div className="trending-collection__rank">{info[index + 5].rank}</div>
+                        <div className="trending-collection__collection">
+                          <figure className="trending-collection__img__wrapper">
+                            <img
+                              src={info[index + 5].imageLink}
+                              alt=""
+                              className="trending-collection__img"
+                            />
+                          </figure>
+                          <div className="trending-collection__name">
+                            {info[index + 5].title}
+                          </div>
+                          <img
+                            src={VerifiedIcon}
+                            className="trending-collection__verified"
+                          />
+                        </div>
+                        <div className="trending-collection__price">
+                          <span className="trending-collection__price__span">
+                            {Number(info[index + 5].floor).toFixed(2)} ETH
+                          </span>
+                        </div>
+                        <div className="trending-collection__volume">
+                          <span className="trending-collection__volume__span">
+                            {info[index + 5].totalVolume} ETH
+                          </span>
+                        </div>
+                      </Link>
+                    ))
+                  )}
+                </div>
+              </div>
+            </SkeletonTheme>
           </div>
         </div>
-      </section>
-    </>
+      </div>
+    </section>
   );
 }
