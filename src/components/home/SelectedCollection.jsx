@@ -5,12 +5,13 @@ import SelectedItemLogo from "../../assets/selected-collection-logo.avif";
 import VerifiedIcon from "../../assets/verified.png";
 import { Link } from "react-router-dom";
 import axios from "axios";
-
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 export default function SelectedCollection() {
 
   const [info, setInfo] = useState([])
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true); // Changed to true for initial loading
 
   async function fetchApiData() {
     try {
@@ -34,22 +35,24 @@ export default function SelectedCollection() {
     return (
       <header>
         <div className="selected-collection">
-          <div className="skeleton-video skeleton" />
-          <div className="selected-collection__description">
-            <div className="skeleton-logo skeleton" />
-            <div className="skeleton-title skeleton" />
-            <div className="skeleton-author skeleton" />
-            <div className="skeleton-details skeleton" />
-            <div className="skeleton-button skeleton" />
-          </div>
+          <SkeletonTheme baseColor="#f3f4f6" highlightColor="#e5e7eb">
+            <div className="selected-collection__bg" style={{ 
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              zIndex: -1
+            }}>
+              <Skeleton height="100%" width="100%" />
+            </div>
+          </SkeletonTheme>
         </div>
       </header>
     );
   }
 
   if (!info) return <div>No data found.</div>;
-
-
 
   return (
     <header>

@@ -12,6 +12,7 @@ export default function Trending() {
 
   const [info, setInfo] = useState([])
   const [loading, setLoading] = useState(true);
+  const [showSkeleton, setShowSkeleton] = useState(true);
 
   async function fetchApiData() {
     try {
@@ -23,6 +24,10 @@ export default function Trending() {
       console.error("Error fetching data:", error);
     } finally {
       setLoading(false);
+      // Hide skeleton after a brief delay to let animation complete
+      setTimeout(() => {
+        setShowSkeleton(false);
+      }, 1000);
     }
   }
 
@@ -48,6 +53,9 @@ export default function Trending() {
     }
   }, [loading]);
 
+  // Control when to show actual content vs skeleton
+  const shouldShowSkeleton = loading || showSkeleton;
+
   const TrendingCollectionSkeleton = () => (
   <div className="trending-collection">
     <div className="trending-collection__rank">
@@ -56,7 +64,7 @@ export default function Trending() {
     <div className="trending-collection__collection">
       <figure className="trending-collection__img__wrapper">
         <Skeleton 
-          height={80} 
+          height={100} 
           width={70} 
           borderRadius="0%" 
           className="trending-collection__img"
@@ -96,7 +104,7 @@ export default function Trending() {
             </Link>
           </div>
           <div className="trending__body" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">
-            <SkeletonTheme baseColor="#f3f4f6" highlightColor="#e5e7eb">
+            <SkeletonTheme baseColor="#dfdfdfff" highlightColor="#dfdfdfff">
               <div className="trending-column">
                 <div className="trending-column__header">
                   <div className="trending-column__header__rank">#</div>
@@ -109,7 +117,7 @@ export default function Trending() {
                   <div className="trending-column__header__price">Volume</div>
                 </div>
                 <div className="trending-column__body">
-                  {loading ? (
+                  {shouldShowSkeleton ? (
                     Array.from({ length: 5 }, (_, index) => (
                       <TrendingCollectionSkeleton key={index} rank={index + 1} />
                     ))
@@ -164,7 +172,7 @@ export default function Trending() {
                   <div className="trending-column__header__price">Volume</div>
                 </div>
                 <div className="trending-column__body">
-                  {loading ? (
+                  {shouldShowSkeleton ? (
                     Array.from({ length: 5 }, (_, index) => (
                       <TrendingCollectionSkeleton key={index + 5} rank={index + 6} />
                     ))
