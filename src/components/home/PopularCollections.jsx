@@ -60,7 +60,7 @@ export default function PopularCollections() {
     <section id="popular-collections">
       <div className="container">
         <div className="row">
-          <h2 className="popular-collections__title" data-aos="fade-up" data-aos-duration="800">
+          <h2 className="popular-collections__title" data-aos="fade-up" data-aos-duration="800" data-aos-offset="5" data-aos-mirror="false">
             Popular Collections
           </h2>
           <div className="arrow__swiper__left">
