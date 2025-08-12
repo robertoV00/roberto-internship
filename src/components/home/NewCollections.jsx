@@ -44,11 +44,11 @@ export default function NewCollections() {
     
     AOS.init({
       duration: 1000, // Default duration
-      once: true, // Animation happens only once (prevents re-animation when scrolling up)
-      offset: 120, // Higher offset means animation triggers earlier when scrolling down
+      once: false, // Animation happens only once (prevents re-animation when scrolling up)
+      offset: 200, // Higher offset means animation triggers earlier when scrolling down
       delay: 0, // No global delay
       easing: 'ease-out', // Smooth easing
-      mirror: false, // Don't repeat animation when scrolling up
+      mirror: true, // Don't repeat animation when scrolling up
     });
   }, [])
 
@@ -65,7 +65,7 @@ export default function NewCollections() {
     <section id="new-collections">
       <div className="container">
         <div className="row">
-          <h2 className="new-collections__title" data-aos="fade-up" data-aos-duration="800">
+          <h2 className="new-collections__title" data-aos="fade-up" data-aos-duration="700" data-aos-offset="5" data-aos-mirror="false">
             New Collections
           </h2>
           <div className="arrow__swiper__left">
@@ -74,7 +74,7 @@ export default function NewCollections() {
           <div className="arrow__swiper__right">
             <FontAwesomeIcon icon={faCircleRight} />
           </div>
-          <div data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">
+          <div data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200" data-aos-mirror="false">
             <Swiper
               modules={[Navigation, Scrollbar]}
               slidesPerView={6}
