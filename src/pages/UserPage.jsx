@@ -22,7 +22,7 @@ export default function UserPage() {
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
-      setLoading(true); // Fixed: was setting to true
+      setLoading(false); // Fixed: was setting to true
     }
   }
 
