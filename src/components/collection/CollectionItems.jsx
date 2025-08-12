@@ -50,7 +50,7 @@ export default function CollectionItems() {
               <div className="item-column" key={idx}>
                 <div className="item">
                   <figure className="item__img__wrapper">
-                    <Skeleton width={180} height={180} />
+                    <Skeleton width={280} height={280} />
                   </figure>
                   <div className="item__details">
                     <span className="item__details__name">
