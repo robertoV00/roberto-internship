@@ -10,7 +10,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 import 'swiper/swiper-bundle.css'
-import Skeleton from "react-loading-skeleton";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { Navigation, Pagination, Scrollbar} from 'swiper/modules';
 import AOS from 'aos';
@@ -20,6 +20,7 @@ export default function NewCollections() {
 
   const [info, setInfo] = useState([])
   const [loading, setLoading] = useState(true);
+  const [showSkeleton, setShowSkeleton] = useState(true);
 
   async function fetchApiData() {
     try {
@@ -32,74 +33,34 @@ export default function NewCollections() {
       console.error("Error fetching data:", error);
     } finally {
       setLoading(false);
+      setTimeout(() => {
+        setShowSkeleton(false);
+      }, 500);
     }
   }
 
   useEffect(() => {
     fetchApiData();
     
-    // Initialize AOS
     AOS.init({
       duration: 1000, // Default duration
-      once: true, // Animation happens only once
-      offset: 200, // Higher offset means animation triggers earlier when scrolling
+      once: true, // Animation happens only once (prevents re-animation when scrolling up)
+      offset: 120, // Higher offset means animation triggers earlier when scrolling down
       delay: 0, // No global delay
       easing: 'ease-out', // Smooth easing
       mirror: false, // Don't repeat animation when scrolling up
     });
   }, [])
 
-  // Refresh AOS when loading changes
   useEffect(() => {
     if (!loading) {
       AOS.refresh();
     }
   }, [loading]);
 
-  if (loading) {
-      return (
-        <section id="popular-collections">
-          <div className="container">
-            <div className="row">
-              <h2 className="popular-collections__title">Popular Collections</h2>
-              <div className="popular-collections__body" style={{ display: "flex", gap: "30px" }}>
-                {Array.from({ length: 6 }).map((_, index) => (
-                  <div className="collection-column popular__collections__column" key={index}>
-                    <div className="collection">
-                      <Skeleton height={180} style={{ borderRadius: "12px 12px 0 0" }} />
-                      <div className="collection__info">
-                        <h3 className="collection__name">
-                          <Skeleton width={120} height={24} />
-                        </h3>
-                        <div className="collection__stats">
-                          <div className="collection__stat">
-                            <span className="collection__stat__label">
-                              <Skeleton width={40} height={16} />
-                            </span>
-                            <span className="collection__stat__data">
-                              <Skeleton width={60} height={18} />
-                            </span>
-                          </div>
-                          <div className="collection__stat">
-                            <span className="collection__stat__label">
-                              <Skeleton width={80} height={16} />
-                            </span>
-                            <span className="collection__stat__data">
-                              <Skeleton width={60} height={18} />
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-      );
-    }
-  
+  // Control when to show actual content vs skeleton
+  const shouldShowSkeleton = loading || showSkeleton;
+
   return (
     <section id="new-collections">
       <div className="container">
@@ -130,8 +91,43 @@ export default function NewCollections() {
                 0:    { slidesPerView: 1 }
               }}
             >
-              <div className="new-collections__body">
-                {loading ? "loading" : info.map((_, index) => (
+              {shouldShowSkeleton ? (
+                <SkeletonTheme baseColor="#f3f4f6" highlightColor="#e5e7eb">
+                  {Array.from({ length: 6 }).map((_, index) => (
+                    <SwiperSlide key={index}>
+                      <div className="collection-column new__collections__column">
+                        <div className="collection">
+                          <Skeleton height={180} style={{ borderRadius: "12px 12px 0 0" }} />
+                          <div className="collection__info">
+                            <h3 className="collection__name">
+                              <Skeleton width={120} height={24} />
+                            </h3>
+                            <div className="collection__stats">
+                              <div className="collection__stat">
+                                <span className="collection__stat__label">
+                                  <Skeleton width={40} height={16} />
+                                </span>
+                                <span className="collection__stat__data">
+                                  <Skeleton width={60} height={18} />
+                                </span>
+                              </div>
+                              <div className="collection__stat">
+                                <span className="collection__stat__label">
+                                  <Skeleton width={80} height={16} />
+                                </span>
+                                <span className="collection__stat__data">
+                                  <Skeleton width={60} height={18} />
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </SwiperSlide>
+                  ))}
+                </SkeletonTheme>
+              ) : (
+                info.map((_, index) => (
                   <SwiperSlide key={index}>
                     <div className="collection-column new__collections__column">
                       <Link to={`/collection/${info[index].collectionId}`} key={index} className="collection">
@@ -158,8 +154,8 @@ export default function NewCollections() {
                       </Link>
                     </div>
                   </SwiperSlide>
-                ))}
-              </div>
+                ))
+              )}
             </Swiper>
           </div>
         </div>
