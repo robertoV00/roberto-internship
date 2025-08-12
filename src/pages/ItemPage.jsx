@@ -86,28 +86,31 @@ export default function ItemPage() {
                   <div className="item-page__img__details">
                     <Skeleton width={32} height={32} circle />
                     <div className="item-page__img__likes">
-                      <Skeleton width={32} height={32} circle />
                       <Skeleton width={30} height={18} />
                     </div>
                   </div>
-                  <Skeleton width={700} height={785} />
+                  <Skeleton width={800} height={785} />
                 </figure>
               </div>
               <div className="item-page__right">
-                <Skeleton width={120} height={24} style={{ marginBottom: 8 }} />
-                <Skeleton width={220} height={40} style={{ marginBottom: 8 }} />
-                <Skeleton width={180} height={20} style={{ marginBottom: 16 }} />
+                <Skeleton width={120} height={24} style={{ marginBottom: 8 }} inline/>
+                <Skeleton width={0} height={0} style={{ marginBottom: 8 }} inline/>
+                <Skeleton width={280} height={20} style={{ marginBottom: 8 }} inline/>
+                <Skeleton width={150} height={20} style={{ marginBottom: 16 }} inline/>
                 <div className="item-page__details">
-                  <Skeleton width={100} height={20} count={3} style={{ marginBottom: 8 }} />
+                  <Skeleton width={100} height={20} count={1} style={{ marginBottom: 8}} inline/>
+                  <Skeleton width={100} height={20} count={1} style={{ marginBottom: 8, marginLeft: 10 }} inline/>
+                  <Skeleton width={100} height={20} count={1} style={{ marginBottom: 8, marginLeft: 10 }} inline/>
                 </div>
                 <div className="item-page__sale">
                   <div className="item-page__sale__header">
-                    <Skeleton width={160} height={20} />
+                    <Skeleton width={250} height={20} />
                   </div>
                   <div className="item-page__sale__body">
                     <Skeleton width={100} height={18} style={{ marginBottom: 8 }} />
-                    <Skeleton width={120} height={32} style={{ marginBottom: 8 }} />
-                    <Skeleton width={200} height={40} />
+                    <Skeleton width={160} height={22} style={{ marginBottom: 8 }} inline/>
+                    <Skeleton width={160} height={22} style={{ marginBottom: 8, marginLeft: 10 }} inline/>
+                    <Skeleton width={950} height={40} />
                   </div>
                 </div>
               </div>
