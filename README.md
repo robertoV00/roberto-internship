@@ -1,8 +1,17 @@
-# React + Vite
+# Everest NFT Marketplace - NFT Marketplace Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<img width="1440" alt="Everst NFT Marketplace Image" src="https://i.postimg.cc/NFHXRTtd/image.png">
 
-Currently, two official plugins are available:
+Transformed a static single-page application into an interactive UI with animations, transitions, and carousels, utilising Axios for dynamic data representation. Employed Git for version control and collaboration.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Install Packages
+
+```bash
+npm i
+```
+
+## Start the app
+
+```bash
+npm run dev
+```
